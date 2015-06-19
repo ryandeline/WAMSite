@@ -1,0 +1,87 @@
+@import "global";
+
+//
+// @variables
+//
+$include-html-panelb-classes: $include-html-classes !default;
+
+// We use these to control the background and border styles
+$panelb-bg: scale-color(rgba(10,10,158,0), $lightness: 0%) !default;
+$panelb-border-style: solid !default;
+$panelb-border-size: 0px !default;
+
+// We use this % to control how much we darken things on hover
+$panelb-function-factor: -11% !default;
+$panelb-border-color: scale-color($panelb-bg, $lightness: $panelb-function-factor) !default;
+
+// We use these to set default inner padding and bottom margin
+$panelb-margin-bottom: rem-calc(20) !default;
+$panelb-padding: rem-calc(25) !default;
+
+// We use these to set default font colors
+$panelb-font-color: rgba(35,159,164,1) !default;
+$panelb-font-color-alt: rgba(58,0,0,1) !default;
+
+$panelb-header-adjust: true !default;
+$callout-panelb-link-color: $primary-color !default;
+//
+// @mixins
+//
+// We use this mixin to create panelbs.
+// $bg - Sets the panelb background color. Default: $panelb-pg || scale-color(#fff, $lightness: -5%) !default
+// $padding - Sets the panelb padding amount. Default: $panelb-padding || rem-calc(20)
+// $adjust - Sets the font color based on the darkness of the bg & resets header line-heights for panelbs. Default: $panelb-header-adjust || true
+@mixin panelb($bg:$panelb-bg, $padding:$panelb-padding, $adjust:$panelb-header-adjust) {
+
+  @if $bg {
+    $bg-lightness: lightness($bg);
+
+    border-style: $panelb-border-style;
+    border-width: $panelb-border-size;
+    border-color: scale-color($bg, $lightness: $panelb-function-factor);
+    margin-bottom: $panelb-margin-bottom;
+    padding: $padding;
+
+    background: $bg;
+
+    // Respect the padding, fool.
+    &>:first-child { margin-top: 0; }
+    &>:last-child { margin-bottom: 0; }
+
+    @if $adjust {
+      // We set the font color based on the darkness of the bg.
+      @if $bg-lightness >= 50% and $bg == blue { h1,h2,h3,h4,h5,h6,p { color: $panelb-font-color-alt; } }
+      @else if $bg-lightness >= 50%            { h1,h2,h3,h4,h5,h6,p { color: $panelb-font-color; } }
+      @else                                    { h1,h2,h3,h4,h5,h6,p { color: $panelb-font-color-alt; } }
+
+      // reset header line-heights for panelbs
+      h1,h2,h3,h4,h5,h6 {
+        line-height: 1; margin-bottom: rem-calc(10) / 2;
+        &.subheader { line-height: 1.4; }
+      }
+    }
+  }
+}
+
+@include exports("panelb") {
+  @if $include-html-panelb-classes {
+
+    /* panelbs */
+    .panelb { @include panelb;
+
+      &.callout {
+        @include panelb(scale-color($primary-color, $lightness: 94%));
+        a {
+          color: $callout-panelb-link-color;
+        }
+      }
+
+      &.radius {
+        @include panelb($bg:false);
+        @include radius;
+      }
+
+    }
+
+  }
+}

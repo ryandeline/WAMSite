@@ -1,0 +1,460 @@
+ <!doctype html>
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="keywords" content="Topopgraphic, Mapping, Aerial, Harrier 68i, LiDAR, lidar, LiDar, DEM, DTM, Contour, Maps, Stereo, Compilation, Aerial Fleet, Mapping Company" />
+  <meta name="description" content="Williams Aerial &amp; Mapping, Inc. provides mapping services including topographic mapping, contour mapping, DEM generation, GIS BaseMap Creation, parcel mapping, site mapping, along with many other mapping services." />
+  <meta name="author" content="Ryan DeLine">
+  <meta name="copywrite" content="Williams Aerial &amp; Mapping, Inc. (c) 2015"/>
+  <title>WAM | Mapping</title><meta property="og:title" content="Williams Aerial &amp; Mapping, Inc."/>
+  <link rel="stylesheet" href="stylesheets/app.css" />
+  <script src="bower_components/modernizr/modernizr.js"></script>
+
+
+<SCRIPT LANGUAGE = "JavaScript1.1">		
+//These are the texts to appear in the textframe
+var Scale = 400;
+
+var Scale50 = '1\" = 50\'';
+var Scale100 = '1\" = 100\'';
+var Scale200 = '1\" = 200\'';
+var Scale400 = '1\" = 400\'';
+
+var Accuracy50 = '± 1.25\'';
+var Accuracy100 = '± 2.5\'';
+var Accuracy200 = '± 5\'';
+var Accuracy400 = '± 10\'';
+
+var empty = ' ';
+
+
+function toggleOFF(e)
+{
+	 e.style.display = "none";
+}
+
+function toggleON(e)
+{
+	 e.style.display = "";
+}
+
+//This is the function to change text:
+function htmlChange(id,message)
+{
+	d=document;
+	re=d.all?d.all[id]:d.getElementById(id);
+	re.innerHTML=message;
+}
+
+function UpdateDisplay(direction)
+{
+// Set New Scale
+	if(direction == 'up')
+	{
+		switch(Scale)
+		{
+			case 50: break;
+			case 100: Scale = 50;  break;
+			case 200: Scale = 100; break;
+			case 400: Scale = 200;  break;
+			default : break;
+		}
+	}
+	else if(direction == 'down')
+	{
+		switch(Scale)
+		{
+			case 50: Scale = 100; break;
+			case 100: Scale = 200; break;
+			case 200: Scale = 400; break;
+			case 400: break;
+			default : break;
+		}
+	}
+
+
+	switch(Scale)
+	{
+		case 50:
+			htmlChange('LabelScale',Scale50);
+			htmlChange('LabelAccuracy',Accuracy50);
+			document["DisplayImage"].src = "images/mappingscales/050.png";
+
+			htmlChange('f1','Buildings');
+			htmlChange('f2','Roads');
+			htmlChange('f3','Railroads');
+			htmlChange('f4','Drainage Features');
+			htmlChange('f5','Bridges');
+			htmlChange('f6','Culverts');
+			htmlChange('f7','Fences');
+			htmlChange('f8','Driveways');
+			htmlChange('f9','Poles');
+			htmlChange('f10','Sidewalks');
+			htmlChange('f11','Individual Trees');
+			htmlChange('f12','Fire Hydrants');
+			htmlChange('f13','Manholes');
+			htmlChange('f14','Catch Basins');
+		break;
+
+		case 100:
+			htmlChange('LabelScale',Scale100);
+			htmlChange('LabelAccuracy',Accuracy100);
+			document["DisplayImage"].src = "images/mappingscales/100.png";
+
+			htmlChange('f1','Buildings');
+			htmlChange('f2','Roads');
+			htmlChange('f3','Railroads');
+			htmlChange('f4','Drainage Features');
+			htmlChange('f5','Bridges');
+			htmlChange('f6','Culverts');
+			htmlChange('f7','Fences');
+			htmlChange('f8','Driveways');
+			htmlChange('f9','Poles');
+			htmlChange('f10','Trees');
+			htmlChange('f11',empty);
+			htmlChange('f12',empty);
+			htmlChange('f13',empty);
+			htmlChange('f14',empty);
+		break;
+
+		case 200:
+			htmlChange('LabelScale',Scale200);
+			htmlChange('LabelAccuracy',Accuracy200);
+			document["DisplayImage"].src = "images/mappingscales/200.png";
+
+			htmlChange('f1','Buildings');
+			htmlChange('f2','Roads');
+			htmlChange('f3','Railroads');
+			htmlChange('f4','Drainage Features');
+			htmlChange('f5','Bridges');
+			htmlChange('f6','Major Fences');
+			htmlChange('f7','Groups of Trees');
+			htmlChange('f8',empty);
+			htmlChange('f9',empty);
+			htmlChange('f10',empty);
+			htmlChange('f11',empty);
+			htmlChange('f12',empty);
+			htmlChange('f13',empty);
+			htmlChange('f14',empty);
+		break;
+
+
+		case 400:
+			htmlChange('LabelScale',Scale400);
+			htmlChange('LabelAccuracy',Accuracy400);
+			document["DisplayImage"].src = "images/mappingscales/400.png";
+
+			htmlChange('f1','Major Buildings');
+			htmlChange('f2','Roads');
+			htmlChange('f3','Railroads');
+			htmlChange('f4','Identifiable Bridges');
+			htmlChange('f5','Major Drainage');
+			htmlChange('f6','Timber Areas');
+			htmlChange('f7',empty);
+			htmlChange('f8',empty);
+			htmlChange('f9',empty);
+			htmlChange('f10',empty);
+			htmlChange('f11',empty);
+			htmlChange('f12',empty);
+			htmlChange('f13',empty);
+			htmlChange('f14',empty);
+		break;
+
+		default : break;
+	}
+}
+</SCRIPT>
+</head>
+<body>
+	<style type="text/css">body{font-family:'Raleway',Helvetica,Arial,sans-serif;font-weight:400;background-color:rgba(0,51,102,1);}.button{font-family:'Raleway',Helvetica,Arial,sans-serif;}.button-group li{padding-top:3%;}.button-group a{color:rgba(0,0,0,1);background-color:transparent;}.button-group a:hover{color:rgba(0,0,0,0.4);background-color:transparent;}.button-group{float:none;}@media only screen and (min-width: 40.063em) {.button-group{float:right;}}
+
+      .namelogo{padding:0px 0px 0px -10px;}@media only screen and (min-width: 40.063em) {.namelogo{padding-bottom:0px;}}.namelogo h1{font-size:1.5em;font-weight:600;text-align:center;}@media only screen and (min-width: 40.063em) {.namelogo h1{font-size:30px;text-align:left;}}@media only screen and (min-width: 64.063em) {.namelogo h1{font-size:30px;text-align:left;}}
+
+
+      .work img:hover{opacity:0.5;-webkit-transition:0.3s ease;-moz-transition:0.3s ease;-ms-transition:0.3s ease;-o-transition:0.3s ease;transition:0.3s ease;}.work li{height:140px;overflow:hidden;}hr{border:0;height:1px;background-image:-webkit-linear-gradient(left,rgba(239,237,70, 0),rgba(239,237,70, 0.75),rgba(239,237,70, 0));background-image:-moz-linear-gradient(left,rgba(239,237,70, 0),rgba(239,237,70, 0.75),rgba(239,237,70, 0));background-image:-ms-linear-gradient(left,rgba(239,237,70, 0),rgba(239,237,70, 0.75),rgba(239,237,70, 0));background-image:-o-linear-gradient(left,rgba(239,237,70, 0),rgba(239,237,70, 0.75),rrgba(239,237,70, 0));opacity:0.8;}footer{padding:80px 0 10px 0;}footer a:hover{color:rgba(0,0,0,0.4);background-color:transparent;}section.left-small {width: 2.8125rem;height: 2.8125rem;position: absolute;top: 0;border-right: solid 0px rgba(46, 0, 0, 0.7);box-shadow: 0 0 0 rgba(117, 0, 0, 0.7);left: 0;}section.right-small {width: 2.8125rem;height: 2.8125rem;position: absolute;top: 0;border-left: solid 0px rgba(162, 0, 0, 0.7);box-shadow: 0 0 0 rgba(29, 0, 0, 0.7);right: 0;}</style>
+<!-- SITE NAVIGATION -->
+<!-- Mobile Navigation -->
+<div class="off-canvas-wrap" data-offconvas>
+    <div class="inner-wrap">
+      <nav class="top-bar show-for-small">
+        <section class="right-small">
+          <a class="right-off-canvas-toggle menu-icon" href="#"><span></span></a>
+        </section>
+      </nav>
+      <aside class="right-off-canvas-menu">
+            <ul class="off-canvas-list">
+                <li><label>Navigate</label></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="sensors.html">Our Sensors</a></li>
+                <li><a href="fleet.html">Our Planes</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contactus.html" style="color:rgba(50,0,0, 1);"><strong>Contact Us</strong></a></li>
+                <li><label>Our Products</label></li>
+                <li><a href="mapping.html">Digital Mapping</a></li>
+                <li><a href="orthos.html">Orthophotography</a></li>
+                <li><a href="lidarmap.html">LiDAR Mapping</a></li>
+                <!--<li><a href="aerial.html">Aerial Photography</a></li>-->
+                <li><label>Our Sensors</label></li>
+                <li><a href="harrier.html">Trimble Harrier 68i</a></li>
+                <li><a href="dmc.html">Z/I DMC Sensor</a></li>
+                <li><a href="lmk.html">Zeiss LMK</a></li>
+                <li><a href="rc30.html">Leica RC30</a></li>
+                <li><label>Login</label></li>
+                <li><a href="https://aerialmaps.sharepoint.com">Employee Login</a></li>           
+            </ul>
+      </aside>
+      <a class="exit-off-canvas"></a>
+<!-- Icon Hover Bar -->
+<div class="sticky right">
+  <nav class="icon-bar show-for-small" data-topbar role="navigation">
+    <section class="right-small">
+        <a class="right-off-canvas-toggle menu-icon" href="#"><span></span></a>
+       </section>
+   <!-- ICON bar -->
+    <section class="middle tab-bar-section">
+      <ul class="inline-list">
+        <a class="item" href="index.html"><img src="images/icons/home.svg"><span> | </span></a>
+        <a class="item" href="https://www.facebook.com/pages/Williams-Aerial-Mapping/116885521672887"><img src="images/icons/facebook.svg"><span> | </span></a>
+        <a class="item" href="https://www.linkedin.com/company/2198454?trk=vsrp_companies_cluster_name&trkInfo=VSRPsearchId%3A785403501419261492160%2CVSRPtargetId%3A2198454%2CVSRPcmpt%3Acompanies_cluster"><img src="images/icons/linkedin.svg"><span> | </span></a>
+        <a class="item" href="https://twitter.com/aerialmaps"><img src="images/icons/twitter.svg"><span> | </span></a></li>
+        <a class="item" href="contactus.html"><img src="images/icons/mail.svg"><span></a>
+      </ul>
+    </section>
+  </nav>
+</div>
+<!-- Full Screen Navigation -->
+<div class="sticky">
+  <nav class="top-bar hide-for-small" data-topbar role="navigation">
+    <section class="top-bar-section">
+    <ul class="right">
+    <li class="has-dropdown"><a href="index.html">Home<a/></li>
+      <li class="has-dropdown"><a href="#">Products</a>
+        <ul class="dropdown">
+          <li><a href="mapping.html">Photogrammetric Mapping</a></li>
+          <li><a href="orthos.html">Digital Orthophotography</a></li>
+          <li><a href="lidarmap.html">LiDAR Collection</a></li>
+          <!--<li><a href="basemaps.html">GIS Base Maps</a></li>
+          <li><a href="aerial.html">Aerial Photography</a></li>-->
+        </ul>
+      </li>
+      <li class="has-dropdown"><a href="sensors.html">Sensors</a>
+        <ul class="dropdown">
+          <li><a href="harrier.html">Trimble Harrier 68i</a></li>
+          <li><a href="dmc.html">Z/I DMC Sensor</a></li>
+          <li><a href="lmk.html">Zeiss LMK</a></li>
+          <li><a href="rc30.html">Leica RC30</a></li>   
+        </ul>
+      </li>
+      <li><a href="fleet.html">Fleet</a></li>
+      <li><a href="ftp://50.77.156.99">Client Login</a></li>
+      <li><a href="https://aerialmaps.sharepoint.com">Employee Login</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="contactus.html" style="color:rgba(239,237,70, 1);"><strong>Contact Us</strong></a></li>
+    </ul>
+    </section>
+  </nav>
+</div>
+
+<header class="show-for-small-only">
+  <div class="namelogo">
+    <h1>Williams Aerial &amp; Mapping, Inc.<hr></h1>
+  </div>
+</header>
+<header class="row hide-for-small">
+  <div class="medium-36 large-34 columns namelogo">
+    <h1>Williams Aerial &amp; Mapping, Inc.</h1><hr>
+  </div>
+</header>
+
+<!-- ## BEGIN BODY CONTENT ## -->
+<div style="background: url(images/cell_bg_blue.gif) repeat-x">
+
+
+
+<div class="large-48 columns panelb hide-for-small">
+
+	<div class="panelb">
+	<div class="panelw large-48 columns" style="border: solid thin silver; box-shadow: 0 0 2em silver;">
+		<div class="large-24 columns">
+			<h3  align="center">Photogrammetric Mapping</h3><br>
+			<p>Whether you have a corridor project or annual stockpile updates, Williams' experienced staff has the skill to ensure your job is done with extreme levels of accuracy. Click on an image for a larger view.</p>
+					<!-- Clearing House of Images -->
+			<ul class="clearing-thumbs small-block-grid-2 medium-block-grid-2 large-block-grid-2" data-clearing>
+				<li><a href="images/_products/_mapping/BOTH.jpg"><img data-caption="Our planimetric maps are perfect for residential expansion!" src="images/_products/_mapping/_th/BOTH_thumb.png"></a></li>
+				<li><a href="images/_products/_mapping/boyce.jpg"><img data-caption="Seamless mosaicked basemaps to acompany the mapping!" src="images/_products/_mapping/_th/boyce_thumb.png"></a></li>
+				<li><a href="images/_products/_mapping/contours.png"><img src="images/_products/_mapping/_th/countours_thumb.png"></a></li>
+				<li><a href="images/_products/_mapping/streator.jpg"><img src="images/_products/_mapping/_th/streator_thumb.png"></a></li>
+			</ul>
+			
+			<p align="justified"><b>Williams Aerial &amp; Mapping, Inc. has a rich history in the creation of planimetric and topographic maps.  Beginning as the photogrammetry department with Clyde E. Williams and Associates, the company had it's origins in 1941.  Today Williams is a thriving firm of Professional Photogrammetrists.  We look forward to hearing from you as you search out the right fit for your project.</b></p>
+
+			
+
+		</div><br><br><br>
+
+	<div class="panelw large-push-3 large-20 columns prod" style="border: solid thin silver; box-shadow: 0 0 2em silver;">
+		<h3 align="center">What it is</h3>
+		<p>The two major features of Photogrammetric Mapping are Planimetric and Topographic Mapping.  Planimetric Mapping includes and identifies physical features such as roads, buildings and vegetation, while Topographic Mapping is a collection of break lines and spot elevations.  This method of mapping is a primary source for the creation of Digital Elevation Models (DEMs) and Digital Terrain Models (DTMs).  Williams Aerial &amp; Mapping Inc. has over 60 years of experience creating both planimetric and topographic maps.</p><p>Here at Williams we use a variety of analytic techniques to create topographic and planimetric maps.  Some common applications for planimetric mapping include: GIS base maps, Digital Elevation Models, road design, sewer and water utilities layout &amp; design, drainage and runoff analysis, volume determination of sand, coal, and mines, landfill compaction ratios and subdivision design.</p>
+	</div>
+	</div>
+</div></div>
+
+	<div class="panelw large-48 columns show-for-small-only">
+		<div class="large-24 columns prod">
+			<p><h3  align="center">Photogrammetric Mapping</h3></P>
+			<p align="justify"><b>Williams Aerial &amp; Mapping, Inc. has a rich history in the creation of planimetric and topographic maps.  Beginning as the photogrammetry department with Clyde E. Williams and Associates, the company had it's origins in 1941.  Today Williams is a thriving firm of Professional Photogrammetrists.  We look forward to hearing from you as you search out the right fit for your project.</b></p>
+
+			<p align="justify">Whether you have a corridor project or annual stockpile updates, Williams' experienced staff has the skill to ensure your job is done with extreme levels of accuracy. Click on an image for a larger view.</p>
+					<!-- Clearing House of Images -->
+			<ul class="clearing-thumbs small-block-grid-2 medium-block-grid-2 large-block-grid-2" data-clearing>
+				<li><a href="images/_products/_mapping/BOTH.jpg"><img data-caption="Our planimetric maps are perfect for residential expansion!" src="images/_products/_mapping/_th/BOTH_thumb.png"></a></li>
+				<li><a href="images/_products/_mapping/boyce.jpg"><img data-caption="Seamless mosaicked basemaps to acompany the mapping!" src="images/_products/_mapping/_th/boyce_thumb.png"></a></li>
+				<li><a href="images/_products/_mapping/contours.png"><img src="images/_products/_mapping/_th/countours_thumb.png"></a></li>
+				<li><a href="images/_products/_mapping/streator.jpg"><img src="images/_products/_mapping/_th/streator_thumb.png"></a></li>
+			</ul>
+		</div>
+
+	<div class="panelw large-20 columns prod">
+		<p><h3 align="center">What it is</h3></p>
+		<p align="justify">The two major features of Photogrammetric Mapping are Planimetric and Topographic Mapping.  Planimetric Mapping includes and identifies physical features such as roads, buildings and vegetation, while Topographic Mapping is a collection of break lines and spot elevations.  This method of mapping is a primary source for the creation of Digital Elevation Models (DEMs) and Digital Terrain Models (DTMs).  Williams Aerial &amp; Mapping Inc. has over 60 years of experience creating both planimetric and topographic maps.</p><p align="justify">Here at Williams we use a variety of analytic techniques to create topographic and planimetric maps.  Some common applications for planimetric mapping include: GIS base maps, Digital Elevation Models, road design, sewer and water utilities layout &amp; design, drainage and runoff analysis, volume determination of sand, coal, and mines, landfill compaction ratios and subdivision design.</p>
+	</div>
+</div>		
+
+<!-- Program from old Site -->
+	
+<div class="large-48 columns">
+<h3 align="center" class="show-for-small-only">Toggle the arrows to compare mapping scales</h3><br>
+	<div class="row panelw large-14 large-offset-2 medium-20 columns" style="border: solid thin silver; box-shadow: 0 0 2em silver;">
+		<table class="large-48 columns ">
+
+			<tr>
+				<td width="50%" align="center"  onclick="UpdateDisplay('down')";>
+					<img border="0" id = "ButtonDown" src="images/mappingscales/up.png" width="50" height="50"></td>
+				<td width="50%" align="center" onclick="UpdateDisplay('up')";>
+					<img id = "ButtonUp" border="0" src="images/mappingscales/down.png" width="50" height="50"></td>
+			</tr>
+		</table>
+		<table  width = "100%" >
+			<tr>
+				<td width="100%">
+					<p align="center"><font color="#b58e50"><b>Mapping Scale</b></font></p>
+  				</td>
+  			</tr>
+  			<tr>
+	 			<td id = "LabelScale" width="100%" align="center">
+					<li width="100%" align="center">1" = 400'</li>
+				</td>
+			</tr>
+			<tr>
+		  		<td width="100%">
+					<p align="center"><br><b><font color="b58e50">Accuracy<br></font></b></p>
+		  	  	</td>
+			</tr>
+			<tr>
+		  		<td width="100%"  id = "LabelAccuracy" align="center">
+		  			<li align="center">± 10'</li>
+		  		</td>
+			</tr>
+			<tr>
+		  		<td width="100%">
+		 			<p align="center"><br><b><font color="#b58e50">Features Shown</font></b><br></p>
+		  		</td>
+			</tr>
+			<tr>
+		  		<td width="100%">
+		  			<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" width="100%">
+			 			<tr>
+							<td id = "f1" width="50%">Major Buildings</td>
+							<td id = "f2" width="50%" align="left" valign="top">Roads</td>
+			 			</tr>
+			 			<tr>
+							<td id = "f3" width="50%">Railroads</td>
+							<td id = "f4" width="50%">Identifiable Bridges</td>
+			 			</tr>
+			 			<tr>
+							<td id = "f5" width="50%">Major Drainage</td>
+							<td id = "f6" width="50%">Timber Areas</td>
+			 			</tr>
+			 			<tr>
+							<td id = "f7" width="50%">&nbsp;</td>
+							<td id = "f8" width="50%">&nbsp;</td>
+			 			</tr>
+			 			<tr>
+							<td id = "f9" width="50%">&nbsp;</td>
+							<td id = "f10" width="50%" >&nbsp;</td>
+			 			</tr>
+			 			<tr>
+							<td id = "f11" width="50%">&nbsp;</td>
+							<td id = "f12" width="50%">&nbsp;</td>
+			 			</tr>
+			 			<tr>
+							<td id = "f13" width="50%">&nbsp;</td>
+							<td id = "f14" width="50%">&nbsp;</td>
+			 			</tr>
+			 		</table>
+		 		</td>
+			</tr>
+		</table>
+		<!--<table class="large-48 columns show-for-small-only">
+			<tr>
+				<td width="50%" align="left"  onclick="UpdateDisplay('down')";>
+					<img border="0" id = "ButtonDown" src="images/mappingscales/up.png" width="50" height="50"></td>
+				<td width="50%" align="right" onclick="UpdateDisplay('up')";>
+					<img id = "ButtonUp" border="0" src="images/mappingscales/down.png" width="50" height="50"></td>
+			</tr>
+		</table>-->
+	</div>
+		<h3 align="center" class="hide-for-small">Toggle the arrows to compare mapping scales</h3><br>
+	<div class="panelw large-24 large-offset-4 medium-24 medium-offset-2 columns" style="border: solid thin silver; box-shadow: 0 0 2em silver;">	 
+	 		<p align="center"><img NAME = "DisplayImage" border="0" src="images/mappingscales/400.png" width="520" height="450">
+	</div>
+
+
+</div>
+
+
+
+<!-- ## FOOTER -->
+<footer class="row" >
+  <hr>
+      <div class=" medium-16 large-12 columns hide-for-small">
+        <ul class="inline-list left">
+          <li><a href="https://www.facebook.com/pages/Williams-Aerial-Mapping/116885521672887"><img src="images/icons/facebook.svg"></a></li>
+          <li><a href="https://www.linkedin.com/company/2198454?trk=vsrp_companies_cluster_name&trkInfo=VSRPsearchId%3A785403501419261492160%2CVSRPtargetId%3A2198454%2CVSRPcmpt%3Acompanies_cluster"><img src="images/icons/linkedin.svg"></a></li>
+          <li><a href="https://twitter.com/aerialmaps"><img src="images/icons/twitter.svg"></a></li>
+          <li><a href="contactus.html"><img src="images/icons/mail.svg"></a></li>
+        </ul>
+      </div>
+      <div class="small-offset-1 small-48 medium-offset-4 medium-28 large-17 columns">
+        <ul class="inline-list right">
+          <li><a href="index.html"><p style="color:rgba(255,255,255,.5);">Home</p></a></li>
+          <li class="hide-for-large"><a href="sensors.html"><p style="color:rgba(255,255,255,.5);">Sensors</p></a></li>
+          <li><a href="about.html"><p style="color:rgba(255,255,255,.5);">About Us</p></a></li>
+          <li><a href="contactus.html"><p style="color:rgba(255,255,255,.5);">Contact Us</p></a></li>
+        </ul>
+      </div>
+      <div class="row small-48 medium-1 columns">
+        <p align="right" style="color:rgba(255,255,255,.5);">&copy; 2015 Williams Aerial &amp; Mapping, Inc.</p> 
+        <!--<a href="mailto:rdeline@williamaerial.com" style="color:rgba(255,255,255,.5);"><p align="right" >Mail Webmaster</a></p>-->
+      </div>
+</footer>
+
+		<script src="bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="bower_components/foundation/js/foundation.min.js"></script>
+		<script src="js/app.js"></script>
+		<script>
+			$(document).foundation();
+		</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57478125-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+	</body>
+</html>

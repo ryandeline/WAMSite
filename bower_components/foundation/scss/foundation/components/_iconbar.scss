@@ -1,0 +1,628 @@
+@import "global";
+@import "grid";
+
+//
+// Top Bar Variables
+//
+$include-html-icon-bar-classes: $include-html-classes !default;
+
+// Background color for the top bar
+$iconbar-bg-color: rgba(58,0,0, 0.8) !default;
+$iconbar-bg: $iconbar-bg-color !default;
+
+// Height and margin
+$iconbar-height: 28px !default;
+$iconbar-margin-bottom: 3px !default;
+
+// Controlling the styles for the title in the top bar
+$iconbar-title-weight: normal !default;
+$iconbar-title-font-size: rem-calc(17) !default;
+
+// Style the top bar dropdown elements
+$iconbar-dropdown-bg: rgba(58,0,0, 0.5) !default;
+$iconbar-dropdown-link-color: rgba(181,142,80, 1) !default;
+$iconbar-dropdown-link-bg: #fff !default;
+$iconbar-dropdown-link-weight: normal !default;
+$iconbar-dropdown-toggle-size: 5px !default;
+$iconbar-dropdown-toggle-color: rgba(58,5,0, 1) !default;
+$iconbar-dropdown-toggle-alpha: .8 !default;
+
+// Set the link colors and styles for top-level nav
+$iconbar-link-color: rgba(181,142,80, 1) !default;
+$iconbar-link-color-hover: rgba(181,142,80, 1) !default;
+$iconbar-link-color-active: #fff !default;
+$iconbar-link-color-active-hover: #fff !default;
+$iconbar-link-weight: normal !default;
+$iconbar-link-font-size: rem-calc(13) !default;
+$iconbar-link-hover-lightness: -10% !default; // Darken by 10%
+$iconbar-link-bg-hover: rgba(58,0,0, 0.7) !default;
+$iconbar-link-bg-active: $primary-color !default;
+$iconbar-link-bg-active-hover: scale-color($primary-color, $lightness: -14%) !default;
+$iconbar-link-font-family: $body-font-family !default;
+$iconbar-link-padding: $iconbar-height / 2 !default;
+
+$iconbar-button-font-size: 0.75rem;
+$iconbar-button-top: 0px !default;
+
+$iconbar-dropdown-label-color: #777 !default;
+$iconbar-dropdown-label-text-transform: uppercase !default;
+$iconbar-dropdown-label-font-weight: bold !default;
+$iconbar-dropdown-label-font-size: rem-calc(10) !default;
+$iconbar-dropdown-label-bg: #333 !default;
+
+// Top menu icon styles
+$iconbar-menu-link-transform: uppercase !default;
+$iconbar-menu-link-font-size: rem-calc(13) !default;
+$iconbar-menu-link-weight: bold !default;
+$iconbar-menu-link-color: rgba(181,142,80, 0.8) !default;
+$iconbar-menu-icon-color: rgba(181,142,80, 0.8) !default;
+$iconbar-menu-link-color-toggled: rgba(181,142,80, 0.8) !default;
+$iconbar-menu-icon-color-toggled: rgba(181,142,80, 0.8) !default;
+
+// Transitions and breakpoint styles
+$iconbar-transition-speed: 400ms !default;
+// Using rem-calc for the below breakpoint causes issues with top bar
+$iconbar-breakpoint: #{lower-bound($small-range)} !default; // Change to 9999px for always mobile layout
+$iconbar-media-query: $medium-up !default;
+
+// Divider Styles
+$iconbar-divider-border-bottom: solid 1px  scale-color($iconbar-bg-color, $lightness: 13%) !default;
+$iconbar-divider-border-top: solid 1px scale-color($iconbar-bg-color, $lightness: -50%) !default;
+
+// Sticky Class
+$iconbar-sticky-class: ".sticky" !default;
+$iconbar-arrows: false !default; //Set false to remove the triangle icon from the menu item
+
+@include exports("icon-bar") {
+  // Used to provide media query values for javascript components.
+  // This class is generated despite the value of $include-html-icon-bar-classes
+  // to ensure width calculations work correctly.
+  meta.foundation-mq-iconbar {
+    font-family: "/" + unquote($iconbar-media-query) + "/";
+    width: $iconbar-breakpoint;
+  }
+
+  @if $include-html-icon-bar-classes {
+
+    /* Wrapped around .icon-bar to contain to grid width */
+    .contain-to-grid {
+      width: 100%;
+      background: $iconbar-bg;
+
+      .icon-bar { margin-bottom: $iconbar-margin-bottom; }
+    }
+
+    // Wrapped around .icon-bar to make it stick to the top
+    .fixed {
+      width: 100%;
+      #{$default-float}: 0px;
+      position: fixed;
+      top: 0px;
+      z-index: 99;
+
+      &.expanded:not(.icon-bar) {
+          overflow-y: auto;
+          height: auto;
+          width: 100%;
+          max-height: 100%;
+
+        .title-area {
+          position: fixed;
+          width: 100%;
+          z-index: 99;
+        }
+        // Ensure you can scroll the menu on small screens
+        .icon-bar-section {
+          z-index: 98;
+          margin-top: $iconbar-height;
+        }
+      }
+    }
+
+    .icon-bar {
+      overflow: hidden;
+      height: $iconbar-height;
+      line-height: $iconbar-height;
+      position: relative;
+      background: $iconbar-bg;
+      margin-bottom: $iconbar-margin-bottom;
+
+      // iconbar Global list Styles
+      ul {
+        margin-bottom: 0;
+        list-style: none;
+      }
+
+      .row { max-width: none; }
+
+      form,
+      input { margin-bottom: 0; }
+
+      input { height: auto; padding-top: .35rem; padding-bottom: .35rem; font-size: $iconbar-button-font-size; }
+
+      .button {
+        padding-top: .45rem;
+        padding-bottom: .35rem;
+        margin-bottom: 0;
+        font-size: $iconbar-button-font-size;
+          // position: relative;
+          // top: -1px;
+
+      }
+
+      // Title Area
+      .title-area {
+        position: relative;
+        margin: 5;
+      }
+
+      .name {
+        height: $iconbar-height;
+        margin: 0;
+        font-size: $rem-base;
+
+        h1 {
+          line-height: $iconbar-height;
+          font-size: $iconbar-title-font-size;
+          margin: 0;
+          a {
+            font-weight: $iconbar-title-weight;
+            color: $iconbar-link-color;
+            width: 50%;
+            display: block;
+            padding: 0 $iconbar-link-padding;
+          }
+        }
+      }
+
+      // Menu toggle button on small devices
+      .toggle-iconbar {
+        position: relative;
+        overflow-y: auto;
+        min-height: 100%;
+        #{$opposite-direction}: 50;
+        top: 0;
+        z-index:99;
+
+        a {
+          color: $iconbar-link-color;
+          text-transform: $iconbar-menu-link-transform;
+          font-size: $iconbar-menu-link-font-size;
+          font-weight: $iconbar-menu-link-weight;
+          position: relative;
+          display: block;
+          padding: 0 $iconbar-link-padding;
+          height: $iconbar-height;
+          line-height: $iconbar-height;
+        }
+
+        // Adding the class "menu-icon" will add the 3-line icon people love and adore.
+        &.menu-icon {
+          #{$opposite-direction}: $iconbar-link-padding;
+          top: 50%;
+          margin-top: -16px;
+          padding-#{$default-float}: 40px;
+
+          a {
+            @if $text-direction == rtl {
+              text-indent: -58px;
+            }
+            height: 34px;
+            line-height: 33px;
+            padding: 0;
+            padding-right: 25px;
+            color: $iconbar-menu-link-color;
+            position: relative;
+
+            &::after {
+              content:"";
+              position: absolute;
+              #{$opposite-direction}: 0;
+              display: block;
+              width: 16px;
+              top:0;
+              height: 0;
+              // Shh, don't tell, but box-shadows create the menu icon :)
+              @if $experimental {
+                -webkit-box-shadow: 0 10px 0 1px $iconbar-menu-icon-color,
+                                    0 16px 0 1px $iconbar-menu-icon-color,
+                                    0 22px 0 1px $iconbar-menu-icon-color;
+              }
+              box-shadow:         0 10px 0 1px $iconbar-menu-icon-color,
+                                  0 16px 0 1px $iconbar-menu-icon-color,
+                                  0 22px 0 1px $iconbar-menu-icon-color;
+            }
+          }
+        }
+      }
+
+      // Change things up when the icon-bar is expanded
+      &.expanded {
+        height: auto;
+        background: rgba(58,0,0, 0.9);
+
+        .title-area { background: $iconbar-bg; }
+
+        .toggle-iconbar {
+          a { color: $iconbar-menu-link-color-toggled;
+            span {
+              // Shh, don't tell, but box-shadows create the menu icon :)
+              @if $experimental {
+                -webkit-box-shadow: 0 10px 0 1px $iconbar-menu-icon-color-toggled,
+                                    0 16px 0 1px $iconbar-menu-icon-color-toggled,
+                                    0 22px 0 1px $iconbar-menu-icon-color-toggled;
+              }
+              box-shadow:         0 10px 0 1px $iconbar-menu-icon-color-toggled,
+                                  0 16px 0 1px $iconbar-menu-icon-color-toggled,
+                                  0 22px 0 1px $iconbar-menu-icon-color-toggled;
+            }
+          }
+        }
+      }
+
+
+
+    }
+
+    // Right and Left Navigation that stacked by default
+    .icon-bar-section {
+      #{$default-float}: 0;
+      position: relative;
+      width: auto;
+      @include single-transition($default-float, $iconbar-transition-speed);
+
+      ul {
+        width: 100%;
+        height: 118px;
+        display: block;
+        position: right;
+        background: $iconbar-dropdown-bg;
+        font-size: $rem-base;
+        margin: 0;
+        padding: 15;
+        top: 100%;
+        z-index:99999;
+      }
+
+      .divider,
+      [role="separator"] {
+        border-top: $iconbar-divider-border-top;
+        clear: both;
+        height: 1px;
+        width: 100%;
+      }
+
+      ul li {
+        & > a {
+          display: block;
+          width: 100%;
+          color: $iconbar-link-color;
+          padding-top: 12px 0 12px 0;
+          padding-#{$default-float}: $iconbar-link-padding;
+          font-family: $iconbar-link-font-family;
+          font-size: $iconbar-link-font-size;
+          font-weight: $iconbar-link-weight;
+          background: $iconbar-dropdown-bg;
+          z-index: 99;
+
+          &.button {
+            background: $primary-color;
+            font-size: $iconbar-link-font-size;
+             padding-#{$opposite-direction}: $iconbar-link-padding;
+             padding-#{$default-float}: $iconbar-link-padding;
+            &:hover {
+              background: scale-color($primary-color, $lightness: -27%);
+            }
+          }
+          &.button.secondary {
+            background: $secondary-color;
+            &:hover {
+              background: scale-color($secondary-color, $lightness: -11%);
+            }
+          }
+          &.button.success {
+            background: $success-color;
+            &:hover {
+              background: scale-color($success-color, $lightness: -21%);
+            }
+          }
+          &.button.alert {
+            background: $alert-color;
+            &:hover {
+              background: scale-color($alert-color, $lightness: -18%);
+            }
+          }
+
+        }
+
+        // Apply the hover link color when it has that class
+        &:hover > a {
+          background: $iconbar-link-bg-hover;
+          color: $iconbar-link-color-hover;
+
+        }
+
+        // Apply the active link color when it has that class
+        &.active > a {
+          background: $iconbar-link-bg-active;
+          color: $iconbar-link-color-active;
+          &:hover {
+                background: $iconbar-link-bg-active-hover;
+                color: $iconbar-link-color-active-hover;
+          }
+        }
+      }
+
+      // Add some extra padding for list items contains buttons
+      .has-form { padding: $iconbar-link-padding; }
+
+      // Styling for list items that have a dropdown within them.
+      .has-dropdown {
+        position: relative;
+        z-index:99;
+
+        & > a {
+          &:after {
+            @if ($iconbar-arrows){
+              @include css-triangle($iconbar-dropdown-toggle-size, rgba($iconbar-dropdown-toggle-color, $iconbar-dropdown-toggle-alpha), $default-float);
+            }
+            margin-#{$opposite-direction}: $iconbar-link-padding;
+            margin-top: -($iconbar-dropdown-toggle-size / 2) - 2;
+            position: absolute;
+            top: 10%;
+            #{$opposite-direction}: 0;
+          }
+        }
+
+        &.moved { position: static;
+          & > .dropdown {
+            display: block;
+          }
+        }
+      }
+
+      // Styling elements inside of dropdowns
+      .dropdown {
+        position: absolute;
+        #{$default-float}: 100%;
+        top: 0;
+        display: none;
+        z-index: 99;
+
+        li {
+          width: 100%;
+          height: auto;
+
+          a {
+            font-weight: $iconbar-dropdown-link-weight;
+            padding: 0px $iconbar-link-padding;
+            &.parent-link {
+              font-weight: $iconbar-link-weight;
+            }
+          }
+
+          &.title h5 { margin-bottom: 0;
+            a {
+              color: $iconbar-link-color;
+              line-height: $iconbar-height / 2;
+              display: block;
+            }
+          }
+          &.has-form { padding: 8px $iconbar-link-padding; }
+          .button { top: auto; }
+        }
+
+        label {
+          padding: 8px $iconbar-link-padding 2px;
+          margin-bottom: 0;
+          text-transform: $iconbar-dropdown-label-text-transform;
+          color: $iconbar-dropdown-label-color;
+          font-weight: $iconbar-dropdown-label-font-weight;
+          font-size: $iconbar-dropdown-label-font-size;
+        }
+      }
+    }
+
+    .js-generated { display: block; }
+
+
+    // Top Bar styles intended for screen sizes above the breakpoint.
+    @media #{$iconbar-media-query} {
+      .icon-bar {
+        background: $iconbar-bg;
+        @include clearfix;
+        overflow: visible;
+
+        .toggle-iconbar { display: none; }
+
+        .title-area { float: $default-float; }
+        .name h1 a { width: auto; }
+
+        input,
+        .button {
+          font-size: rem-calc(14);
+          position: relative;
+          top: $iconbar-button-top;
+        }
+
+        &.expanded { background: $iconbar-bg; }
+      }
+
+      .contain-to-grid .icon-bar {
+        max-width: $row-width;
+        margin: 0 auto;
+        margin-bottom: $iconbar-margin-bottom;
+      }
+
+      .icon-bar-section {
+        @include single-transition(none,0,0);
+        #{$default-float}: 0 !important;
+
+        ul {
+          width: auto;
+          height: auto !important;
+          display: inline;
+
+          li {
+            float: $default-float;
+            .js-generated { display: none; }
+          }
+        }
+
+        li {
+          &.hover {
+            > a:not(.button) {
+              background: $iconbar-link-bg-hover;
+              color: $iconbar-link-color-hover;
+            }
+          }
+          &:not(.has-form) {
+            a:not(.button) {
+              padding: 0 $iconbar-link-padding;
+              line-height: $iconbar-height;
+              background: $iconbar-bg;
+              &:hover { background: $iconbar-link-bg-hover; }
+            }
+          }
+          &.active:not(.has-form) {
+            a:not(.button) {
+              padding: 0 $iconbar-height / 3;
+              line-height: $iconbar-height;
+              color: $iconbar-link-color-active;
+              background: $iconbar-link-bg-active;
+              &:hover { background: $iconbar-link-bg-active-hover; }
+            }
+          }
+        }
+
+        .has-dropdown {
+
+          @if($iconbar-arrows){
+
+            & > a {
+              padding-#{$opposite-direction}: $iconbar-link-padding + 20 !important;
+              &:after {
+                @include css-triangle($iconbar-dropdown-toggle-size, rgba($iconbar-dropdown-toggle-color, $iconbar-dropdown-toggle-alpha), top);
+                margin-top: -($iconbar-dropdown-toggle-size / 2);
+                top: $iconbar-height / 2;
+              }
+            }
+
+          }
+
+          &.moved { position: relative;
+            & > .dropdown { display: none; }
+          }
+
+          &.hover, &.not-click:hover {
+            & > .dropdown {
+              display: block;
+            }
+          }
+
+          .dropdown li.has-dropdown {
+            & > a {
+              &:after {
+                border: none;
+                content: "\00bb";
+                top: 1rem;
+                margin-top: -2px;
+                #{$opposite-direction}: 5px;
+                line-height: 1.2;
+              }
+            }
+          }
+
+        }
+
+        .dropdown {
+          #{$default-float}: 0;
+          top: auto;
+          background: transparent;
+          min-width: 100%;
+
+          li {
+            a {
+              color: $iconbar-dropdown-link-color;
+              line-height: 1;
+              white-space: nowrap;
+              padding: 12px $iconbar-link-padding;
+              background: $iconbar-dropdown-link-bg;
+            }
+
+            label {
+              white-space: nowrap;
+              background: $iconbar-dropdown-label-bg;
+            }
+
+            // Second Level Dropdowns
+            .dropdown {
+              #{$default-float}: 100%;
+              top: 0;
+            }
+          }
+        }
+
+        & > ul > .divider,
+        & > ul > [role="separator"] {
+          border-bottom: none;
+          border-top: none;
+          border-#{$opposite-direction}: $iconbar-divider-border-bottom;
+          clear: none;
+          height: $iconbar-height;
+          width: 0;
+        }
+
+        .has-form {
+          background: $iconbar-bg;
+          padding: 0 $iconbar-link-padding;
+          height: $iconbar-height;
+        }
+
+        // Position overrides for ul.right and ul.left
+        .right {
+          li .dropdown {
+            #{$default-float}: auto;
+            #{$opposite-direction}: 50;
+
+            li .dropdown { #{$opposite-direction}: 100%; }
+          }
+        }
+        .left {
+          li .dropdown {
+            #{$opposite-direction}: auto;
+            #{$default-float}: 0;
+
+            li .dropdown { #{$default-float}: 100%; }
+          }
+        }
+      }
+
+      // Degrade gracefully when Javascript is disabled. Displays dropdown and changes
+      // background & text color on hover.
+      .no-js .icon-bar-section {
+        ul li {
+          // Apply the hover link color when it has that class
+          &:hover > a {
+            background: $iconbar-link-bg-hover;
+            color: $iconbar-link-color-hover;
+          }
+
+          // Apply the active link color when it has that class
+          &:active > a {
+            background: $iconbar-link-bg-active;
+            color: $iconbar-link-color-active;
+          }
+        }
+
+        .has-dropdown {
+          &:hover {
+            & > .dropdown {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+  }
+}

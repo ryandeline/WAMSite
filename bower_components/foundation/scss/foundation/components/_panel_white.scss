@@ -1,0 +1,87 @@
+@import "global";
+
+//
+// @variables
+//
+$include-html-panelw-classes: $include-html-classes !default;
+
+// We use these to control the background and border styles
+$panelw-bg: scale-color(rgba(255,255,255,1), $lightness: 55%) !default;
+$panelw-border-style: solid !default;
+$panelw-border-size: 0px !default;
+
+// We use this % to control how much we darken things on hover
+$panelw-function-factor: -11% !default;
+$panelw-border-color: scale-color($panelw-bg, $lightness: $panelw-function-factor) !default;
+
+// We use these to set default inner padding and bottom margin
+$panelw-margin-bottom: rem-calc(20) !default;
+$panelw-padding: rem-calc(20) !default;
+
+// We use these to set default font colors
+$panelw-font-color: rgba(58,0,0,1) !default;
+$panelw-font-color-alt: rgba(58,0,0,1) !default;
+
+$panelw-header-adjust: true !default;
+$callout-panelw-link-color: $primary-color !default;
+//
+// @mixins
+//
+// We use this mixin to create panelws.
+// $bg - Sets the panelw background color. Default: $panelw-pg || scale-color(#fff, $lightness: -5%) !default
+// $padding - Sets the panelw padding amount. Default: $panelw-padding || rem-calc(20)
+// $adjust - Sets the font color based on the darkness of the bg & resets header line-heights for panelws. Default: $panelw-header-adjust || true
+@mixin panelw($bg:$panelw-bg, $padding:$panelw-padding, $adjust:$panelw-header-adjust) {
+
+  @if $bg {
+    $bg-lightness: lightness($bg);
+
+    border-style: $panelw-border-style;
+    border-width: $panelw-border-size;
+    border-color: scale-color($bg, $lightness: $panelw-function-factor);
+    margin-bottom: $panelw-margin-bottom;
+    padding: $padding;
+
+    background: $bg;
+
+    // Respect the padding, fool.
+    &>:first-child { margin-top: 0; }
+    &>:last-child { margin-bottom: 0; }
+
+    @if $adjust {
+      // We set the font color based on the darkness of the bg.
+      @if $bg-lightness >= 50% and $bg == blue { h1,h2,h3,h4,h5,h6,p { color: $panelw-font-color-alt; } }
+      @else if $bg-lightness >= 50%            { h1,h2,h3,h4,h5,h6,p { color: $panelw-font-color; } }
+      @else                                    { h1,h2,h3,h4,h5,h6,p { color: $panelw-font-color-alt; } }
+
+      // reset header line-heights for panelws
+      h1,h2,h3,h4,h5,h6 {
+        line-height: 1; margin-bottom: rem-calc(10) / 2;
+        &.subheader { line-height: 1.4; }
+      }
+    }
+  }
+}
+
+@include exports("panelw") {
+  @if $include-html-panelw-classes {
+
+    /* panelws */
+    .panelw { @include panelw;
+
+      &.callout {
+        @include panelw(scale-color($primary-color, $lightness: 94%));
+        a {
+          color: $callout-panelw-link-color;
+        }
+      }
+
+      &.radius {
+        @include panelw($bg:false);
+        @include radius;
+      }
+
+    }
+
+  }
+}

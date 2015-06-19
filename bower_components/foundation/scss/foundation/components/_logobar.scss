@@ -1,0 +1,628 @@
+@import "global";
+@import "grid";
+
+//
+// Top Bar Variables
+//
+$include-html-logobar-classes: $include-html-classes !default;
+
+// Background color for the top bar
+$logobar-bg-color: rgba(0,51,102,0) !default;
+$logobar-bg: rgba(0,51,102,1) !default;
+
+// Height and margin
+$logobar-height: 50px !default;
+$logobar-margin-bottom: 0px !default;
+
+// Controlling the styles for the title in the top bar
+$logobar-title-weight: normal !default;
+$logobar-title-font-size: rem-calc(20) !default;
+
+// Style the top bar dropdown elements
+$logobar-dropdown-bg: #fff !default;
+$logobar-dropdown-link-color: #fff !default;
+$logobar-dropdown-link-bg: #fff !default;
+$logobar-dropdown-link-weight: normal !default;
+$logobar-dropdown-toggle-size: 5px !default;
+$logobar-dropdown-toggle-color: #fff !default;
+$logobar-dropdown-toggle-alpha: .8 !default;
+
+// Set the link colors and styles for top-level nav
+$logobar-link-color: #fff !default;
+$logobar-link-color-hover: #fff !default;
+$logobar-link-color-active: #fff !default;
+$logobar-link-color-active-hover: #fff !default;
+$logobar-link-weight: normal !default;
+$logobar-link-font-size: rem-calc(13) !default;
+$logobar-link-hover-lightness: -10% !default; // Darken by 10%
+$logobar-link-bg-hover: rgba(58,0,0, 0.7) !default;
+$logobar-link-bg-active: $primary-color !default;
+$logobar-link-bg-active-hover: scale-color($primary-color, $lightness: -14%) !default;
+$logobar-link-font-family: $body-font-family !default;
+$logobar-link-padding: $logobar-height / 2 !default;
+
+$logobar-button-font-size: 0.75rem;
+$logobar-button-top: 0px !default;
+
+$logobar-dropdown-label-color: #777 !default;
+$logobar-dropdown-label-text-transform: uppercase !default;
+$logobar-dropdown-label-font-weight: bold !default;
+$logobar-dropdown-label-font-size: rem-calc(10) !default;
+$logobar-dropdown-label-bg: #333 !default;
+
+// Top menu icon styles
+$logobar-menu-link-transform: uppercase !default;
+$logobar-menu-link-font-size: rem-calc(13) !default;
+$logobar-menu-link-weight: bold !default;
+$logobar-menu-link-color: rgba(58,0,0,0.0) !default;
+$logobar-menu-icon-color: rgba(58,0,0,0) !default;
+$logobar-menu-link-color-toggled: rgba(58,0,0,0.0) !default;
+$logobar-menu-icon-color-toggled: rgba(58,0,0,0.0) !default;
+
+// Transitions and breakpoint styles
+$logobar-transition-speed: 400ms !default;
+// Using rem-calc for the below breakpoint causes issues with top bar
+$logobar-breakpoint: #{lower-bound($small-range)} !default; // Change to 9999px for always mobile layout
+$logobar-media-query: $medium-up !default;
+
+// Divider Styles
+$logobar-divider-border-bottom: solid 1px  scale-color($logobar-bg-color, $lightness: 13%) !default;
+$logobar-divider-border-top: solid 1px scale-color($logobar-bg-color, $lightness: -50%) !default;
+
+// Sticky Class
+$logobar-sticky-class: ".sticky" !default;
+$logobar-arrows: false !default; //Set false to remove the triangle icon from the menu item
+
+@include exports("logobar") {
+  // Used to provide media query values for javascript components.
+  // This class is generated despite the value of $include-html-logobar-classes
+  // to ensure width calculations work correctly.
+  meta.foundation-mq-logobar {
+    font-family: "/" + unquote($logobar-media-query) + "/";
+    width: $logobar-breakpoint;
+  }
+
+  @if $include-html-logobar-classes {
+
+    /* Wrapped around logobar to contain to grid width */
+    .contain-to-grid {
+      width: 50%;
+      background: rgba(0,51,102,0);
+
+      logobar { margin-bottom: $logobar-margin-bottom; }
+    }
+
+    // Wrapped around logobar to make it stick to the top
+    .fixed {
+      width: 100%;
+      #{$default-float}: 0px;
+      position: fixed;
+      top: 0px;
+      z-index: 99;
+
+      &.expanded:not(logobar) {
+          overflow-y: auto;
+          height: auto;
+          width: 100%;
+          max-height: 100%;
+
+        .title-area {
+          position: relative;
+          width: 100%;
+          z-index: 99;
+        }
+        // Ensure you can scroll the menu on small screens
+        logobar-section {
+          z-index: 98;
+          margin-top: $logobar-height;
+        }
+      }
+    }
+
+    .logobar {
+      overflow: hidden;
+      height: $logobar-height;
+      line-height: $logobar-height;
+      position: relative;
+      background: $logobar-bg;
+      margin-bottom: $logobar-margin-bottom;
+
+      // logobar Global list Styles
+      ul {
+        margin-bottom: 50px;
+        list-style: none;
+      }
+
+      .row { max-width: none; }
+
+      form,
+      input { margin-bottom: 0; }
+
+      input { height: auto; padding-top: .35rem; padding-bottom: .35rem; font-size: $logobar-button-font-size; }
+
+      .button {
+        padding-top: .45rem;
+        padding-bottom: .35rem;
+        margin-bottom: 0;
+        font-size: $logobar-button-font-size;
+          // position: relative;
+          // top: -1px;
+
+      }
+
+      // Title Area
+      .title-area {
+        position: relative;
+        margin: 5;
+      }
+
+      .name {
+        height: $logobar-height;
+        margin: 0;
+        font-size: $rem-base;
+
+        h1 {
+          line-height: $logobar-height;
+          font-size: $logobar-title-font-size;
+          margin: 0;
+          a {
+            font-weight: $logobar-title-weight;
+            color: $logobar-link-color;
+            width: 50%;
+            display: block;
+            padding: 0 $logobar-link-padding;
+          }
+        }
+      }
+
+      // Menu toggle button on small devices
+      .toggle-logobar {
+        position: relative;
+        overflow-y: auto;
+        min-height: 100%;
+        #{$opposite-direction}: 50;
+        top: 0;
+        z-index:99;
+
+        a {
+          color: $logobar-link-color;
+          text-transform: $logobar-menu-link-transform;
+          font-size: $logobar-menu-link-font-size;
+          font-weight: $logobar-menu-link-weight;
+          position: relative;
+          display: block;
+          padding: 0 $logobar-link-padding;
+          height: $logobar-height;
+          line-height: $logobar-height;
+        }
+
+        // Adding the class "menu-icon" will add the 3-line icon people love and adore.
+        &.menu-icon {
+          #{$opposite-direction}: $logobar-link-padding;
+          top: 50%;
+          margin-top: -16px;
+          padding-#{$default-float}: 40px;
+
+          a {
+            @if $text-direction == rtl {
+              text-indent: -58px;
+            }
+            height: 34px;
+            line-height: 33px;
+            padding: 0;
+            padding-right: 25px;
+            color: $logobar-menu-link-color;
+            position: relative;
+
+            &::after {
+              content:"";
+              position: absolute;
+              #{$opposite-direction}: 0;
+              display: block;
+              width: 16px;
+              top:0;
+              height: 0;
+              // Shh, don't tell, but box-shadows create the menu icon :)
+              @if $experimental {
+                -webkit-box-shadow: 0 10px 0 1px $logobar-menu-icon-color,
+                                    0 16px 0 1px $logobar-menu-icon-color,
+                                    0 22px 0 1px $logobar-menu-icon-color;
+              }
+              box-shadow:         0 10px 0 1px $logobar-menu-icon-color,
+                                  0 16px 0 1px $logobar-menu-icon-color,
+                                  0 22px 0 1px $logobar-menu-icon-color;
+            }
+          }
+        }
+      }
+
+      // Change things up when the logobar is expanded
+      &.expanded {
+        height: auto;
+        background: rgba(58,0,0, 0.0);
+
+        .title-area { background: $logobar-bg; }
+
+        .toggle-logobar {
+          a { color: $logobar-menu-link-color-toggled;
+            span {
+              // Shh, don't tell, but box-shadows create the menu icon :)
+              @if $experimental {
+                -webkit-box-shadow: 0 10px 0 1px $logobar-menu-icon-color-toggled,
+                                    0 16px 0 1px $logobar-menu-icon-color-toggled,
+                                    0 22px 0 1px $logobar-menu-icon-color-toggled;
+              }
+              box-shadow:         0 10px 0 1px $logobar-menu-icon-color-toggled,
+                                  0 16px 0 1px $logobar-menu-icon-color-toggled,
+                                  0 22px 0 1px $logobar-menu-icon-color-toggled;
+            }
+          }
+        }
+      }
+
+
+
+    }
+
+    // Right and Left Navigation that stacked by default
+    .logobar-section {
+      #{$default-float}: 0;
+      position: relative;
+      width: auto;
+      @include single-transition($default-float, $logobar-transition-speed);
+
+      ul {
+        width: 100%;
+        height: 118px;
+        display: block;
+        position: right;
+        background: $logobar-dropdown-bg;
+        font-size: $rem-base;
+        margin: 0;
+        padding: 15;
+        top: 100%;
+        z-index:99999;
+      }
+
+      .divider,
+      [role="separator"] {
+        border-top: $logobar-divider-border-top;
+        clear: both;
+        height: 1px;
+        width: 100%;
+      }
+
+      ul li {
+        & > a {
+          display: block;
+          width: 100%;
+          color: $logobar-link-color;
+          padding-top: 12px 0 12px 0;
+          padding-#{$default-float}: $logobar-link-padding;
+          font-family: $logobar-link-font-family;
+          font-size: $logobar-link-font-size;
+          font-weight: $logobar-link-weight;
+          background: $logobar-dropdown-bg;
+          z-index: 99;
+
+          &.button {
+            background: $primary-color;
+            font-size: $logobar-link-font-size;
+             padding-#{$opposite-direction}: $logobar-link-padding;
+             padding-#{$default-float}: $logobar-link-padding;
+            &:hover {
+              background: scale-color($primary-color, $lightness: -27%);
+            }
+          }
+          &.button.secondary {
+            background: $secondary-color;
+            &:hover {
+              background: scale-color($secondary-color, $lightness: -11%);
+            }
+          }
+          &.button.success {
+            background: $success-color;
+            &:hover {
+              background: scale-color($success-color, $lightness: -21%);
+            }
+          }
+          &.button.alert {
+            background: $alert-color;
+            &:hover {
+              background: scale-color($alert-color, $lightness: -18%);
+            }
+          }
+
+        }
+
+        // Apply the hover link color when it has that class
+        &:hover > a {
+          background: $logobar-link-bg-hover;
+          color: $logobar-link-color-hover;
+
+        }
+
+        // Apply the active link color when it has that class
+        &.active > a {
+          background: $logobar-link-bg-active;
+          color: $logobar-link-color-active;
+          &:hover {
+                background: $logobar-link-bg-active-hover;
+                color: $logobar-link-color-active-hover;
+          }
+        }
+      }
+
+      // Add some extra padding for list items contains buttons
+      .has-form { padding: $logobar-link-padding; }
+
+      // Styling for list items that have a dropdown within them.
+      .has-dropdown {
+        position: relative;
+        z-index:99;
+
+        & > a {
+          &:after {
+            @if ($logobar-arrows){
+              @include css-triangle($logobar-dropdown-toggle-size, rgba($logobar-dropdown-toggle-color, $logobar-dropdown-toggle-alpha), $default-float);
+            }
+            margin-#{$opposite-direction}: $logobar-link-padding;
+            margin-top: -($logobar-dropdown-toggle-size / 2) - 2;
+            position: absolute;
+            top: 10%;
+            #{$opposite-direction}: 0;
+          }
+        }
+
+        &.moved { position: static;
+          & > .dropdown {
+            display: block;
+          }
+        }
+      }
+
+      // Styling elements inside of dropdowns
+      .dropdown {
+        position: absolute;
+        #{$default-float}: 100%;
+        top: 0;
+        display: none;
+        z-index: 99;
+
+        li {
+          width: 100%;
+          height: auto;
+
+          a {
+            font-weight: $logobar-dropdown-link-weight;
+            padding: 0px $logobar-link-padding;
+            &.parent-link {
+              font-weight: $logobar-link-weight;
+            }
+          }
+
+          &.title h5 { margin-bottom: 0;
+            a {
+              color: $logobar-link-color;
+              line-height: $logobar-height / 2;
+              display: block;
+            }
+          }
+          &.has-form { padding: 8px $logobar-link-padding; }
+          .button { top: auto; }
+        }
+
+        label {
+          padding: 8px $logobar-link-padding 2px;
+          margin-bottom: 0;
+          text-transform: $logobar-dropdown-label-text-transform;
+          color: $logobar-dropdown-label-color;
+          font-weight: $logobar-dropdown-label-font-weight;
+          font-size: $logobar-dropdown-label-font-size;
+        }
+      }
+    }
+
+    .js-generated { display: block; }
+
+
+    // Top Bar styles intended for screen sizes above the breakpoint.
+    @media #{$logobar-media-query} {
+      logobar {
+        background: $logobar-bg;
+        @include clearfix;
+        overflow: visible;
+
+        .toggle-logobar { display: none; }
+
+        .title-area { float: $default-float; }
+        .name h1 a { width: auto; }
+
+        input,
+        .button {
+          font-size: rem-calc(14);
+          position: relative;
+          top: $logobar-button-top;
+        }
+
+        &.expanded { background: $logobar-bg; }
+      }
+
+      .contain-to-grid logobar {
+        max-width: $row-width;
+        margin: 0 auto;
+        margin-bottom: $logobar-margin-bottom;
+      }
+
+      logobar-section {
+        @include single-transition(none,0,0);
+        #{$default-float}: 0 !important;
+
+        ul {
+          width: auto;
+          height: auto !important;
+          display: inline;
+
+          li {
+            float: $default-float;
+            .js-generated { display: none; }
+          }
+        }
+
+        li {
+          &.hover {
+            > a:not(.button) {
+              background: $logobar-link-bg-hover;
+              color: $logobar-link-color-hover;
+            }
+          }
+          &:not(.has-form) {
+            a:not(.button) {
+              padding: 0 $logobar-link-padding;
+              line-height: $logobar-height;
+              background: $logobar-bg;
+              &:hover { background: $logobar-link-bg-hover; }
+            }
+          }
+          &.active:not(.has-form) {
+            a:not(.button) {
+              padding: 0 $logobar-height / 3;
+              line-height: $logobar-height;
+              color: $logobar-link-color-active;
+              background: $logobar-link-bg-active;
+              &:hover { background: $logobar-link-bg-active-hover; }
+            }
+          }
+        }
+
+        .has-dropdown {
+
+          @if($logobar-arrows){
+
+            & > a {
+              padding-#{$opposite-direction}: $logobar-link-padding + 20 !important;
+              &:after {
+                @include css-triangle($logobar-dropdown-toggle-size, rgba($logobar-dropdown-toggle-color, $logobar-dropdown-toggle-alpha), top);
+                margin-top: -($logobar-dropdown-toggle-size / 2);
+                top: $logobar-height / 2;
+              }
+            }
+
+          }
+
+          &.moved { position: relative;
+            & > .dropdown { display: none; }
+          }
+
+          &.hover, &.not-click:hover {
+            & > .dropdown {
+              display: block;
+            }
+          }
+
+          .dropdown li.has-dropdown {
+            & > a {
+              &:after {
+                border: none;
+                content: "\00bb";
+                top: 1rem;
+                margin-top: -2px;
+                #{$opposite-direction}: 5px;
+                line-height: 1.2;
+              }
+            }
+          }
+
+        }
+
+        .dropdown {
+          #{$default-float}: 0;
+          top: auto;
+          background: transparent;
+          min-width: 100%;
+
+          li {
+            a {
+              color: $logobar-dropdown-link-color;
+              line-height: 1;
+              white-space: nowrap;
+              padding: 12px $logobar-link-padding;
+              background: $logobar-dropdown-link-bg;
+            }
+
+            label {
+              white-space: nowrap;
+              background: $logobar-dropdown-label-bg;
+            }
+
+            // Second Level Dropdowns
+            .dropdown {
+              #{$default-float}: 100%;
+              top: 0;
+            }
+          }
+        }
+
+        & > ul > .divider,
+        & > ul > [role="separator"] {
+          border-bottom: none;
+          border-top: none;
+          border-#{$opposite-direction}: $logobar-divider-border-bottom;
+          clear: none;
+          height: $logobar-height;
+          width: 0;
+        }
+
+        .has-form {
+          background: $logobar-bg;
+          padding: 0 $logobar-link-padding;
+          height: $logobar-height;
+        }
+
+        // Position overrides for ul.right and ul.left
+        .right {
+          li .dropdown {
+            #{$default-float}: auto;
+            #{$opposite-direction}: 50;
+
+            li .dropdown { #{$opposite-direction}: 100%; }
+          }
+        }
+        .left {
+          li .dropdown {
+            #{$opposite-direction}: auto;
+            #{$default-float}: 0;
+
+            li .dropdown { #{$default-float}: 100%; }
+          }
+        }
+      }
+
+      // Degrade gracefully when Javascript is disabled. Displays dropdown and changes
+      // background & text color on hover.
+      .no-js logobar-section {
+        ul li {
+          // Apply the hover link color when it has that class
+          &:hover > a {
+            background: $logobar-link-bg-hover;
+            color: $logobar-link-color-hover;
+          }
+
+          // Apply the active link color when it has that class
+          &:active > a {
+            background: $logobar-link-bg-active;
+            color: $logobar-link-color-active;
+          }
+        }
+
+        .has-dropdown {
+          &:hover {
+            & > .dropdown {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,373 @@
+@import "global";
+@import "type";
+@import "top-bar";
+
+// Off intcanvas Tab Bar Variables
+$include-html-off-intcanvas-classes: $include-html-classes !default;
+
+$inttabbar-bg: rgba(58,0,0, 0.0) !default;
+$inttabbar-height: rem-calc(45) !default;
+$inttabbar-line-height: $inttabbar-height !default;
+$inttabbar-color: rgba(58,0,0, 0.0) !default;
+$inttabbar-middle-padding: 0 rem-calc(20) !default;
+
+// Off intcanvas Divider Styles
+$inttabbar-right-section-border: solid 0px scale-color($inttabbar-bg, $lightness: 23%) !default;
+$inttabbar-left-section-border: solid 1px scale-color($inttabbar-bg, $lightness: -20%) !default;
+
+// Off intcanvas Tab Bar Headers
+$inttabbar-header-color: rgba(58,0,0, 0.3) !default;
+$inttabbar-header-weight: bold !default;
+$inttabbar-header-line-height: $inttabbar-height !default;
+$inttabbar-header-margin: 35px !default;
+
+// Off intcanvas Menu Variables
+$off-intcanvas-width: 500px !default;
+$off-intcanvas-bg: rgba(0,0,0, 0.1) !default;
+
+// Off intcanvas Menu List Variables
+$off-intcanvas-label-padding: 0.3rem rem-calc(15) !default;
+$off-intcanvas-label-color: rgba(181,142,80,.8) !default; 
+$off-intcanvas-label-text-transform: uppercase !default;
+$off-intcanvas-label-font-weight: bold !default;
+$off-intcanvas-label-bg: rgba(58,0,0, 0.8) !default;
+$off-intcanvas-label-border-top: 1px solid scale-color(#444, $lightness: 14%) !default;
+$off-intcanvas-label-border-bottom: none !default;
+$off-intcanvas-label-margin:0 !default;
+$off-intcanvas-link-padding: rem-calc(7, 10) !default;
+$off-intcanvas-link-color: rgba(255,255,255, 0.7) !default;
+$off-intcanvas-link-border-bottom: 1px solid scale-color($off-intcanvas-bg, $lightness: -25%) !default;
+
+// Off intcanvas Menu Icon Variables
+$inttabbar-menu-icon-color: rgba(181,142,80, 0.8) !default;
+$inttabbar-menu-icon-hover: scale-color($inttabbar-menu-icon-color, $lightness: -30%) !default;
+
+$inttabbar-menu-icon-text-indent: rem-calc(35) !default;
+$inttabbar-menu-icon-width: $inttabbar-height !default;
+$inttabbar-menu-icon-height: $inttabbar-height !default;
+$inttabbar-menu-icon-line-height: rem-calc(33) !default;
+$inttabbar-menu-icon-padding: 0 !default;
+
+$inttabbar-hamburger-icon-width: rem-calc(16) !default;
+$inttabbar-hamburger-icon-left: rem-calc(13) !default;
+$inttabbar-hamburger-icon-top: rem-calc(0) !default;
+
+// Off intcanvas Back-Link Overlay
+$off-intcanvas-overlay-transition: background 300ms ease !default;
+$off-intcanvas-overlay-cursor: pointer !default;
+$off-intcanvas-overlay-box-shadow: -4px 0 4px rgba(#000, 0.5), 4px 0 4px rgba(#000, 0.5) !default;
+$off-intcanvas-overlay-background: rgba(#FFF, 0.05) !default;
+$off-intcanvas-overlay-background-hover: rgba(58,0,0, 0.3) !default;
+
+// Transition Variables
+$menu-slide: "transform 500ms ease" !default;
+
+
+// MIXINS
+// Remove transition flicker on phones
+@mixin kill-flicker {
+  // -webkit-transform: translateZ(0x);
+  -webkit-backface-visibility: hidden;
+}
+
+// Basic properties for the content wraps
+@mixin wrap-base {
+  position: relative;
+  width: 100%;
+}
+
+// basic styles for off-intcanvas menu container
+@mixin off-intcanvas-menu {
+  width: $off-intcanvas-width;
+  top:0;
+  bottom:0;
+  position: absolute;
+  overflow-y: auto;
+  background: $off-intcanvas-bg;
+  z-index: 1001;
+  box-sizing: content-box;
+}
+
+// TRANSLATE 3D
+@mixin translate3d($tx,$ty,$tz) {
+  -webkit-transform: translate3d($tx,$ty,$tz);
+  -moz-transform: translate3d($tx,$ty,$tz);
+  -ms-transform: translate3d($tx,$ty,$tz);
+  -o-transform: translate3d($tx,$ty,$tz);
+  transform: translate3d($tx,$ty,$tz)
+}
+
+// OFF intcanvas WRAP
+// Wrap visible content and prevent scroll bars
+@mixin off-intcanvas-wrap {
+
+  @include kill-flicker;
+  @include wrap-base;
+  overflow-x: hidden;
+  &.move-right,
+  &.move-left { height: 100%; }
+}
+
+// INNER WRAP
+// Main content area that moves to reveal the off-intcanvas nav
+@mixin inner-wrap {
+  @include kill-flicker;
+  @include wrap-base;
+  @include clearfix;
+
+  -webkit-transition: -webkit-#{$menu-slide};
+  -moz-transition: -moz-#{$menu-slide};
+  -ms-transition: -ms-#{$menu-slide};
+  -o-transition: -o-#{$menu-slide};
+  transition: #{$menu-slide};
+}
+
+// TAB BAR
+// This is the tab bar base
+@mixin tab-bar-base {
+  @include kill-flicker;
+
+  // base styles
+  background: $inttabbar-bg;
+  color: $inttabbar-color;
+  height: $inttabbar-height;
+  line-height: $inttabbar-height;
+
+  // make sure it's below the .exit-offintcanvas link
+  position: relative;
+  // z-index: 999;
+
+  // Typography
+  h1,h2,h3,h4,h5,h6 {
+    color: $inttabbar-header-color;
+    font-weight: $inttabbar-header-weight;
+    line-height: $inttabbar-header-line-height;
+    margin: $inttabbar-header-margin;
+  }
+  h1,h2,h3,h4 { font-size: $h5-font-size; }
+}
+
+// SMALL SECTIONS
+// These are small sections on the left and right that contain the off-intcanvas toggle buttons;
+@mixin inttabbar-small-section {
+  width: $inttabbar-height;
+  height: $inttabbar-height;
+  position: absolute;
+  top:0;
+}
+
+@mixin left-small-section {
+  @include inttabbar-small-section;
+  border-right: $inttabbar-left-section-border;
+  box-shadow: 1px 0 0 scale-color($inttabbar-bg, $lightness: 13%);
+  left:0;
+}
+
+@mixin right-small-section {
+  @include inttabbar-small-section;
+  border-left: $inttabbar-right-section-border;
+  box-shadow: -1px 0 0 scale-color($inttabbar-bg, $lightness: -50%);
+  right:0;
+}
+
+@mixin tab-bar-section {
+  padding: $inttabbar-middle-padding;
+  position: absolute;
+  text-align: center;
+  height: $inttabbar-height;
+  top:0;
+  @media #{$medium-up} {
+    text-align: left;
+  }
+
+  // still need to make these non-presentational
+  &.left {
+    left: 0;
+    right: $inttabbar-height;
+  }
+  &.right {
+    left: $inttabbar-height;
+    right: 0;
+  }
+  &.middle {
+    left: $inttabbar-height;
+    right: $inttabbar-height;
+  }
+}
+
+// OFF intcanvas LIST
+// This is the list of links in the off-intcanvas menu
+@mixin off-intcanvas-list {
+  list-style-type: none;
+  padding:0;
+  margin:0;
+
+  li {
+    label {
+      padding: $off-intcanvas-label-padding;
+      color: $off-intcanvas-label-color;
+      text-transform: $off-intcanvas-label-text-transform;
+      font-weight: $off-intcanvas-label-font-weight;
+      background: $off-intcanvas-label-bg;
+      border-top: $off-intcanvas-label-border-top;
+      border-bottom: $off-intcanvas-label-border-bottom;
+      margin: $off-intcanvas-label-margin;
+    }
+    a {
+      display: block;
+      padding: $off-intcanvas-link-padding;
+      color: $off-intcanvas-link-color;
+      border-bottom: $off-intcanvas-link-border-bottom;
+    }
+  }
+
+}
+
+// BACK LINK
+// This is an overlay that, when clicked, will toggle off the off intcanvas menu
+@mixin back-link {
+    @include kill-flicker;
+
+    transition: $off-intcanvas-overlay-transition;
+    cursor: $off-intcanvas-overlay-cursor;
+    box-shadow: $off-intcanvas-overlay-box-shadow;
+
+    // fill the screen
+    display: block;
+    position: absolute;
+    background: $off-intcanvas-overlay-background;
+    top: 0;
+    bottom: 0;
+    left:0;
+    right:0;
+    z-index: 1002;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+
+    @media #{$medium-up} {
+      &:hover {
+        background: $off-intcanvas-overlay-background-hover;
+      }
+    }
+}
+
+// OFF intcanvas MENUS
+// These are the containers that contain the off intcanvas content
+@mixin left-off-intcanvas-menu {
+  @include kill-flicker;
+  @include off-intcanvas-menu;
+  @include translate3d(-100%,0,0);
+  left: 0;
+  * { @include kill-flicker; }
+}
+@mixin right-off-intcanvas-menu {
+  @include kill-flicker;
+  @include off-intcanvas-menu;
+  @include translate3d(100%,0,0);
+  right: 0;
+}
+
+
+//
+// DEFAULT CLASSES
+//
+@include exports("offintcanvas") {
+  @if $include-html-off-intcanvas-classes {
+
+    .off-intcanvas-wrap { @include off-intcanvas-wrap; }
+    .inner-wrap { @include inner-wrap; }
+
+    nav.tab-bar { @include tab-bar-base; }
+
+    section.left-small { @include left-small-section; }
+    section.right-small { @include right-small-section; }
+
+    section.tab-bar-section { @include tab-bar-section; }
+
+    // MENU BUTTON
+    // This is a little bonus. You don't need it for off intcanvas to work. Mixins to be written in the future.
+    a.menu-icon {
+      text-indent: $inttabbar-menu-icon-text-indent;
+      width: $inttabbar-height;
+      height: $inttabbar-height;
+      display: block;
+      line-height: $inttabbar-menu-icon-line-height;
+      padding: $inttabbar-menu-icon-padding;
+      color: $topbar-menu-link-color;
+      position: relative;
+
+      // this is the actual hamburger icon
+      span {
+
+        position: absolute;
+        display: block;
+        width: $inttabbar-hamburger-icon-width;
+        height: 0;
+        left: $inttabbar-hamburger-icon-left;
+        top: $inttabbar-hamburger-icon-top;
+        // margin-top: $inttabbar-height / 4;
+
+        @if $experimental {
+          -webkit-box-shadow: 1px 10px 1px 1px $inttabbar-menu-icon-color,
+                              1px 16px 1px 1px $inttabbar-menu-icon-color,
+                              1px 22px 1px 1px $inttabbar-menu-icon-color;
+        }
+          box-shadow:        0 10px 0 1px $inttabbar-menu-icon-color,
+                              0 16px 0 1px $inttabbar-menu-icon-color,
+                              0 22px 0 1px $inttabbar-menu-icon-color;
+      }
+
+      &:hover span {
+        @if $experimental {
+          -webkit-box-shadow: 1px 10px 1px 1px $inttabbar-menu-icon-hover,
+                              1px 16px 1px 1px $inttabbar-menu-icon-hover,
+                              1px 22px 1px 1px $inttabbar-menu-icon-hover;
+        }
+          box-shadow:        0 10px 0 1px $inttabbar-menu-icon-hover,
+                              0 16px 0 1px $inttabbar-menu-icon-hover,
+                              0 22px 0 1px $inttabbar-menu-icon-hover;
+      }
+    }
+
+    .left-off-intcanvas-menu { @include left-off-intcanvas-menu; }
+    .right-off-intcanvas-menu { @include right-off-intcanvas-menu; }
+
+    ul.off-intcanvas-list { @include off-intcanvas-list; }
+
+
+    // ANIMATION CLASSES
+    // These classes are added with JS and trigger the actual animation.
+    .move-right {
+      > .inner-wrap {
+        @include translate3d($off-intcanvas-width,0,0);
+      }
+      a.exit-off-intcanvas { @include back-link;}
+    }
+
+    .move-left {
+      > .inner-wrap {
+        @include translate3d(-($off-intcanvas-width),0,0);
+
+      }
+      a.exit-off-intcanvas { @include back-link; }
+    }
+
+    // Opera 12.16 and IE9 - don't have 3d transforms
+    .csstransforms.no-csstransforms3d {
+      .left-off-intcanvas-menu { @include translate2d(-100%, 0); }
+      .right-off-intcanvas-menu { @include translate2d(100%, 0); }
+
+      .move-left > .inner-wrap { @include translate2d(-($off-intcanvas-width),0); }
+      .move-right > .inner-wrap { @include translate2d($off-intcanvas-width,0); }
+    }
+
+    // Older browsers
+    .no-csstransforms {
+      .left-off-intcanvas-menu { left: -($off-intcanvas-width); }
+      .right-off-intcanvas-menu { right: -($off-intcanvas-width); }
+
+      .move-left > .inner-wrap { right: $off-intcanvas-width; }
+      .move-right > .inner-wrap { left: $off-intcanvas-width; }
+    }
+
+  }
+}

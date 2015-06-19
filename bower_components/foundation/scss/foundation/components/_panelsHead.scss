@@ -1,0 +1,87 @@
+@import "global";
+
+//
+// @variables
+//
+$include-html-panelh-classes: $include-html-classes !default;
+
+// We use these to control the background and border styles
+$panelh-bg: scale-color(rgba(10,10,158,.8), $lightness: 0%) !default;
+$panelh-border-style: solid !default;
+$panelh-border-size: 1px !default;
+
+// We use this % to control how much we darken things on hover
+$panelh-function-factor: -11% !default;
+$panelh-border-color: scale-color($panelh-bg, $lightness: $panelh-function-factor) !default;
+
+// We use these to set default inner padding and bottom margin
+$panelh-margin-bottom: rem-calc(-30) !default;
+$panelh-padding: rem-calc(25) !default;
+
+// We use these to set default font colors
+$panelh-font-color: #ffffff !default;
+$panelh-font-color-alt: rgba(58,0,0,1) !default;
+
+$panelh-header-adjust: true !default;
+$callout-panelh-link-color: $primary-color !default;
+//
+// @mixins
+//
+// We use this mixin to create panelhs.
+// $bg - Sets the panelh background color. Default: $panelh-pg || scale-color(#fff, $lightness: -5%) !default
+// $padding - Sets the panelh padding amount. Default: $panelh-padding || rem-calc(20)
+// $adjust - Sets the font color based on the darkness of the bg & resets header line-heights for panelhs. Default: $panelh-header-adjust || true
+@mixin panelh($bg:$panelh-bg, $padding:$panelh-padding, $adjust:$panelh-header-adjust) {
+
+  @if $bg {
+    $bg-lightness: lightness($bg);
+    background-img: url(images\iback.jpg);
+    border-style: $panelh-border-style;
+    border-width: $panelh-border-size;
+    border-color: scale-color($bg, $lightness: $panelh-function-factor);
+    margin-bottom: $panelh-margin-bottom;
+    padding: $padding;
+
+    background: $bg;
+
+    // Respect the padding, fool.
+    &>:first-child { margin-top: 0; }
+    &>:last-child { margin-bottom: 0; }
+
+    @if $adjust {
+      // We set the font color based on the darkness of the bg.
+      @if $bg-lightness >= 50% and $bg == blue { h1,h2,h3,h4,h5,h6,p { color: $panelh-font-color-alt; } }
+      @else if $bg-lightness >= 50%            { h1,h2,h3,h4,h5,h6,p { color: $panelh-font-color; } }
+      @else                                    { h1,h2,h3,h4,h5,h6,p { color: $panelh-font-color-alt; } }
+
+      // reset header line-heights for panelhs
+      h1,h2,h3,h4,h5,h6 {
+        line-height: 1; margin-bottom: rem-calc(10) / 2;
+        &.subheader { line-height: 1.4; }
+      }
+    }
+  }
+}
+
+@include exports("panelh") {
+  @if $include-html-panelh-classes {
+
+    /* panelhs */
+    .panelh { @include panelh;
+
+      &.callout {
+        @include panelh(scale-color($primary-color, $lightness: 94%));
+        a {
+          color: $callout-panelh-link-color;
+        }
+      }
+
+      &.radius {
+        @include panelh($bg:false);
+        @include radius;
+      }
+
+    }
+
+  }
+}
